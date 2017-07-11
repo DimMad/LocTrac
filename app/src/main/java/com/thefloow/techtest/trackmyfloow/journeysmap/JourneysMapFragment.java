@@ -326,12 +326,6 @@ public class JourneysMapFragment extends Fragment implements JourneysMapContract
         }
     }
 
-    public void killLocationService()
-    {
-        Intent locationServiceIntent = new Intent(getActivity(), LocationService.class);
-        getActivity().stopService(locationServiceIntent);
-    }
-
     @Override
     public void enableMapCurrentLocationLayer()
     {
@@ -372,6 +366,7 @@ public class JourneysMapFragment extends Fragment implements JourneysMapContract
             IntentFilter broadcastFilter = new IntentFilter();
             broadcastFilter.addAction(LocationService.NEW_POSITION_BROADCAST);
             broadcastFilter.addAction(LocationService.NEW_JOURNEY_BROADCAST);
+            broadcastFilter.addAction(LocationService.END_JOURNEY_BROADCAST);
             mLocalBroadcastManager = LocalBroadcastManager.getInstance(getActivity().getApplicationContext());
             mLocalBroadcastManager.registerReceiver(mMessageReceiver, broadcastFilter);
         }
@@ -395,24 +390,17 @@ public class JourneysMapFragment extends Fragment implements JourneysMapContract
             switch (intent.getAction())
             {
                 case LocationService.NEW_JOURNEY_BROADCAST:
-                    // TODO: figure out weird broadcaster behaviour.
-//                    if (!journeyStarted)
-//                    {
-//                        journeyStarted = true;
                     mJourneysMapPresenter.getActiveJourney();
                     mJourneysMapPresenter.loadJourneys();
-//                    }
-//                    else
-//                    {
-//                        journeyStarted = false;
-//                        mJourneysMapPresenter.loadJourneys();
-//                        clearMapPolyline();
-//                        killLocationService();
-//                    }
                     break;
                 case LocationService.NEW_POSITION_BROADCAST:
                     if (!isShowingHistory)
                         mJourneysMapPresenter.getActiveJourneyPositions();
+                    break;
+                case LocationService.END_JOURNEY_BROADCAST:
+                    mJourneysMapPresenter.loadJourneys();
+                    clearMapPolyline();
+                    unregisterBroadcastReceiver();
                     break;
             }
         }

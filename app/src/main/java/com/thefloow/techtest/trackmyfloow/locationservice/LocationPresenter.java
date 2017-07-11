@@ -75,7 +75,7 @@ public class LocationPresenter implements LocationContract.Presenter
             public void onJourneyCompleted()
             {
                 // TODO: weird bug. Broadcasts from here are not working...
-                mLocationService.sendNewDataBroadcast(LocationService.NEW_JOURNEY_BROADCAST);
+                mLocationService.sendNewDataBroadcast(LocationService.END_JOURNEY_BROADCAST);
                 mLocationService.stopLocationService();
             }
         });

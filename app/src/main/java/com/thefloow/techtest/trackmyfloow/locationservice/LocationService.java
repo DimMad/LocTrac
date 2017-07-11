@@ -51,6 +51,7 @@ public class LocationService extends Service implements LocationContract.View,
     public static final String SERVICE_STOP_ACTION = "STOP_FOREGROUND";
     public static final String NEW_POSITION_BROADCAST = "NEW_POSITION_BROADCAST";
     public static final String NEW_JOURNEY_BROADCAST = "NEW_JOURNEY_BROADCAST";
+    public static final String END_JOURNEY_BROADCAST = "END_JOURNEY_BROADCAST";
 
     LocationPresenter mLocationPresenter;
 

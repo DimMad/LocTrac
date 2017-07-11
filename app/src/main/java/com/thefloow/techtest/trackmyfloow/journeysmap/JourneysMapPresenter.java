@@ -100,7 +100,6 @@ public class JourneysMapPresenter implements JourneysMapContract.Presenter
     @Override
     public void stopTracking()
     {
-        mJourneysMapView.unregisterBroadcastReceiver();
         mJourneysMapView.stopLocationService();
     }
 
