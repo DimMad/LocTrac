@@ -15,9 +15,29 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' } // Repository required for the new Architecture Components
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// Defining version for whole project in the top level
+ext {
+    // SDK and tools
+    minSdkVersion = 16
+    targetSdkVersion = 25
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.3'
+
+    // Other Dependencies
+    supportLibraryVersion = '25.3.1'
+    playServicesVersion = '11.0.2'
+    junitVersion = '4.12'
+    guavaVersion = '22.0-android'
+    mockitoVersion = '2.7.5'
+    runnerVersion = '0.5'
+    rulesVersion = '0.5'
+    espressoVersion = '2.2.2'
 }
