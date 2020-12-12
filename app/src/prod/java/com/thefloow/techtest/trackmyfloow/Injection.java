@@ -1,7 +1,8 @@
 package com.thefloow.techtest.trackmyfloow;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.thefloow.techtest.trackmyfloow.data.source.JourneysDataSource;
 import com.thefloow.techtest.trackmyfloow.data.source.JourneysRepository;

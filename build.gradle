@@ -3,9 +3,10 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.5.4'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -14,8 +15,9 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         jcenter()
-        maven { url 'https://maven.google.com' } // Repository required for the new Architecture Components
+
     }
 }
 
@@ -26,14 +28,15 @@ task clean(type: Delete) {
 // Defining version for whole project in the top level
 ext {
     // SDK and tools
-    minSdkVersion = 16
-    targetSdkVersion = 25
-    compileSdkVersion = 25
-    buildToolsVersion = '25.0.3'
+    minSdkVersion = 21
+    targetSdkVersion = 29
+    compileSdkVersion = 29
+    buildToolsVersion = '30.0.2'
 
     // Other Dependencies
     supportLibraryVersion = '25.3.1'
-    playServicesVersion = '11.0.2'
+    locationServices = '17.1.0'
+    googleMaps = '17.0.0'
     junitVersion = '4.12'
     guavaVersion = '22.0-android'
     mockitoVersion = '2.7.5'

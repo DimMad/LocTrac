@@ -12,7 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     // Forcing compilation of specific version of findbugs to avoid conflict between espresso
@@ -31,13 +31,16 @@ android {
         }
     }
 
+    flavorDimensions "app"
+
     productFlavors {
         mock {
             applicationIdSuffix = ".mock"
+            dimension "app"
         }
 
         prod {
-
+            dimension "app"
         }
     }
 
@@ -64,42 +67,44 @@ dependencies {
     // New Android Architecture Components
 
     // App's dependencies including testing
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.google.android.gms:play-services-location:$rootProject.playServicesVersion"
-    compile "com.google.android.gms:play-services-maps:$rootProject.playServicesVersion"
-    compile "com.google.guava:guava:$rootProject.guavaVersion"
-    compile "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "com.google.android.gms:play-services-location:$rootProject.locationServices"
+    implementation "com.google.android.gms:play-services-maps:$rootProject.googleMaps"
+    implementation "com.google.guava:guava:$rootProject.guavaVersion"
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.3.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+
 
     // Dependencies for local unit testing
-    testCompile "junit:junit:$rootProject.ext.junitVersion"
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
 
     // Dependencies for Android Testing Support Library's runner and rules
-    androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
-    androidTestCompile "com.android.support.test:rules:$rootProject.ext.rulesVersion"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
 
     // Dependencies for Android unit tests
-    androidTestCompile "junit:junit:$rootProject.ext.junitVersion"
-    androidTestCompile "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+    androidTestImplementation "junit:junit:$rootProject.ext.junitVersion"
+    androidTestImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
 
     // Espresso UI Testing
-    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestCompile "com.android.support.test.espresso:espresso-contrib:$rootProject.espressoVersion"
-    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
 
     // Resolve conflicts between main and test APK:
-    androidTestCompile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
-    androidTestCompile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    androidTestCompile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    androidTestCompile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    androidTestCompile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile 'android.arch.persistence.room:runtime:1.0.0-alpha3'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.android.gms:play-services-maps:11.0.2'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0-alpha3'
+    androidTestImplementation 'androidx.annotation:annotation:1.0.0'
+    androidTestImplementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    androidTestImplementation 'androidx.recyclerview:recyclerview:1.0.0'
+    androidTestImplementation 'androidx.appcompat:appcompat:1.0.0'
+    androidTestImplementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.room:room-runtime:2.2.5'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.gms:play-services-maps:11.0.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
 }

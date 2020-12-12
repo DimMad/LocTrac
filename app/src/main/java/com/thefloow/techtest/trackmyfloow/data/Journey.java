@@ -1,8 +1,9 @@
 package com.thefloow.techtest.trackmyfloow.data;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
@@ -12,8 +13,7 @@ import java.util.Date;
  */
 
 @Entity(tableName = "Journeys")
-public final class Journey
-{
+public final class Journey {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private long journeyId;
@@ -27,50 +27,41 @@ public final class Journey
     @ColumnInfo(name = "end_date")
     private Date endDate;
 
-    public Journey(String journeyName, Date startDate)
-    {
+    public Journey(String journeyName, Date startDate) {
         this.journeyName = journeyName;
         this.startDate = startDate;
         this.endDate = null;
     }
 
-    public long getJourneyId()
-    {
+    public long getJourneyId() {
         return journeyId;
     }
 
-    public void setJourneyId(long journeyId)
-    {
+    public void setJourneyId(long journeyId) {
         this.journeyId = journeyId;
     }
 
-    public String getJourneyName()
-    {
+    public String getJourneyName() {
         return journeyName;
     }
 
-    public void setJourneyName(String journeyName)
-    {
+    public void setJourneyName(String journeyName) {
         this.journeyName = journeyName;
     }
 
-    public Date getStartDate()
-    {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate)
-    {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate()
-    {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate)
-    {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 }

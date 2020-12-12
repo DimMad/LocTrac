@@ -1,6 +1,7 @@
 package com.thefloow.techtest.trackmyfloow.journeysmap;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.thefloow.techtest.trackmyfloow.data.Journey;
 import com.thefloow.techtest.trackmyfloow.data.Position;

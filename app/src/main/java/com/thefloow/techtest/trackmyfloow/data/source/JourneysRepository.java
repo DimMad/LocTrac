@@ -1,7 +1,8 @@
 package com.thefloow.techtest.trackmyfloow.data.source;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.thefloow.techtest.trackmyfloow.data.Journey;
 import com.thefloow.techtest.trackmyfloow.data.Position;

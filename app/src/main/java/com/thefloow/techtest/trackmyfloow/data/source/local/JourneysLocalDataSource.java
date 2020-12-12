@@ -1,6 +1,7 @@
 package com.thefloow.techtest.trackmyfloow.data.source.local;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.thefloow.techtest.trackmyfloow.data.Journey;
 import com.thefloow.techtest.trackmyfloow.data.Position;
@@ -20,8 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * </p>
  */
 
-public class JourneysLocalDataSource implements JourneysDataSource
-{
+public class JourneysLocalDataSource implements JourneysDataSource {
     // Static instance of the data source to ensure only one is instantiated and volatile
     // to ensure tha all threads always access the same data from the system memory.
     private static volatile JourneysLocalDataSource INSTANCE;
@@ -34,8 +34,7 @@ public class JourneysLocalDataSource implements JourneysDataSource
 
     // Prevent direct instantiation.
     private JourneysLocalDataSource(@NonNull AppExecutors appExecutors, @NonNull JourneysDao journeysDao,
-                                    @NonNull PositionsDao positionsDao)
-    {
+                                    @NonNull PositionsDao positionsDao) {
         mAppExecutors = appExecutors;
         mJourneysDao = journeysDao;
         mPositionsDao = positionsDao;
@@ -44,14 +43,10 @@ public class JourneysLocalDataSource implements JourneysDataSource
     // Get static instance.
     public static JourneysLocalDataSource getInstance(@NonNull AppExecutors appExecutors,
                                                       @NonNull JourneysDao journeysDao,
-                                                      @NonNull PositionsDao positionsDao)
-    {
-        if (INSTANCE == null)
-        {
-            synchronized (JourneysLocalDataSource.class)
-            {
-                if (INSTANCE == null)
-                {
+                                                      @NonNull PositionsDao positionsDao) {
+        if (INSTANCE == null) {
+            synchronized (JourneysLocalDataSource.class) {
+                if (INSTANCE == null) {
                     INSTANCE = new JourneysLocalDataSource(appExecutors, journeysDao, positionsDao);
                 }
             }
@@ -60,30 +55,24 @@ public class JourneysLocalDataSource implements JourneysDataSource
     }
 
     // Chaining method to provide data source executors access to the location service.
-    public AppExecutors getAppExecutors()
-    {
+    public AppExecutors getAppExecutors() {
         return mAppExecutors;
     }
 
     @Override
-    public void getJourneys(@NonNull final LoadJourneysCallback callback)
-    {
-        Runnable runnable = new Runnable()
-        {
+    public void getJourneys(@NonNull final LoadJourneysCallback callback) {
+        Runnable runnable = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final List<Journey> journeys = mJourneysDao.getAllJourneys();
                 // TODO: should handle which thread each callback is run onto better.
-                mAppExecutors.mainThread().execute(new Runnable()
-                {
+                mAppExecutors.mainThread().execute(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
 //                        if (journeys.isEmpty())
 //                            callback.onDataNotAvailable(); TODO: handle later
 //                        else
-                            callback.onJourneysLoaded(journeys);
+                        callback.onJourneysLoaded(journeys);
                     }
                 });
             }
@@ -92,23 +81,18 @@ public class JourneysLocalDataSource implements JourneysDataSource
     }
 
     @Override
-    public void getJourney(@NonNull final Long journeyId, @NonNull final LoadJourneyCallback callback)
-    {
-        Runnable runnable = new Runnable()
-        {
+    public void getJourney(@NonNull final Long journeyId, @NonNull final LoadJourneyCallback callback) {
+        Runnable runnable = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final Journey journey = mJourneysDao.getJourneyById(journeyId);
-                mAppExecutors.mainThread().execute(new Runnable()
-                {
+                mAppExecutors.mainThread().execute(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
 //                        if (journey == null)
 //                            callback.onDataNotAvailable(); TODO: handle later
 //                        else
-                            callback.onJourneyLoaded(journey);
+                        callback.onJourneyLoaded(journey);
                     }
                 });
             }
@@ -117,23 +101,18 @@ public class JourneysLocalDataSource implements JourneysDataSource
     }
 
     @Override
-    public void getJourneyPositions(@NonNull final Long journeyId, @NonNull final LoadJourneyPositionsCallback callback)
-    {
-        Runnable runnable = new Runnable()
-        {
+    public void getJourneyPositions(@NonNull final Long journeyId, @NonNull final LoadJourneyPositionsCallback callback) {
+        Runnable runnable = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final List<Position> positions = mPositionsDao.getJourneyPositions(journeyId);
-                mAppExecutors.mainThread().execute(new Runnable()
-                {
+                mAppExecutors.mainThread().execute(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
 //                        if (positions.isEmpty())
 //                            callback.onDataNotAvailable();
 //                        else
-                            callback.onPositionsLoaded(positions);
+                        callback.onPositionsLoaded(positions);
                     }
                 });
             }
@@ -142,20 +121,15 @@ public class JourneysLocalDataSource implements JourneysDataSource
     }
 
     @Override
-    public void saveJourney(@NonNull final Journey journey, @NonNull final SaveJourneyCallback callback)
-    {
-        Runnable runnable = new Runnable()
-        {
+    public void saveJourney(@NonNull final Journey journey, @NonNull final SaveJourneyCallback callback) {
+        Runnable runnable = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final long rowId = mJourneysDao.insertJourney(journey);
                 journey.setJourneyId(rowId);
-                mAppExecutors.serviceThread().execute(new Runnable()
-                {
+                mAppExecutors.serviceThread().execute(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         if (rowId > 0)
                             callback.onJourneySaved(journey);
                         //TODO: handle insertion failure.
@@ -167,20 +141,15 @@ public class JourneysLocalDataSource implements JourneysDataSource
     }
 
     @Override
-    public void saveJourneyPosition(@NonNull final Position position, @NonNull final SaveJourneyPositionCallback callback)
-    {
-        Runnable runnable = new Runnable()
-        {
+    public void saveJourneyPosition(@NonNull final Position position, @NonNull final SaveJourneyPositionCallback callback) {
+        Runnable runnable = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final long rowId = mPositionsDao.insertPosition(position);
                 position.setPositionId(rowId);
-                mAppExecutors.serviceThread().execute(new Runnable()
-                {
+                mAppExecutors.serviceThread().execute(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         if (rowId > 0)
                             callback.onPositionSaved();
                         //TODO: handle insertion failure.
@@ -192,20 +161,15 @@ public class JourneysLocalDataSource implements JourneysDataSource
     }
 
     @Override
-    public void completeJourney(@NonNull final Journey journey, @NonNull final JourneyCompletedCallback callback)
-    {
+    public void completeJourney(@NonNull final Journey journey, @NonNull final JourneyCompletedCallback callback) {
         checkNotNull(journey);
-        Runnable runnable = new Runnable()
-        {
+        Runnable runnable = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 mJourneysDao.updateJourney(journey);
-                mAppExecutors.serviceThread().execute(new Runnable()
-                {
+                mAppExecutors.serviceThread().execute(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         callback.onJourneyCompleted();
                     }
                 });
@@ -215,20 +179,15 @@ public class JourneysLocalDataSource implements JourneysDataSource
     }
 
     @Override
-    public void activateJourney(@NonNull final Long journeyId, @NonNull final LoadJourneyPositionsCallback callback)
-    {
+    public void activateJourney(@NonNull final Long journeyId, @NonNull final LoadJourneyPositionsCallback callback) {
         checkNotNull(journeyId);
-        Runnable runnable = new Runnable()
-        {
+        Runnable runnable = new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 final List<Position> positions = mPositionsDao.getJourneyPositions(journeyId);
-                mAppExecutors.mainThread().execute(new Runnable()
-                {
+                mAppExecutors.mainThread().execute(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         callback.onPositionsLoaded(positions);
                     }
                 });
@@ -238,15 +197,13 @@ public class JourneysLocalDataSource implements JourneysDataSource
     }
 
     @Override
-    public void refreshJourneys()
-    {
+    public void refreshJourneys() {
         // Implementation not required here as the repository handles the synchronizations of data
         // from all available data sources.
     }
 
     @Override
-    public void deleteJourney(@NonNull Long JourneyId)
-    {
+    public void deleteJourney(@NonNull Long JourneyId) {
         // TODO: implement if enough time.
     }
 }

@@ -1,6 +1,7 @@
 package com.thefloow.techtest.trackmyfloow.locationservice;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.thefloow.techtest.trackmyfloow.data.Journey;
 import com.thefloow.techtest.trackmyfloow.data.Position;
@@ -18,8 +19,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * retrieves, saves and updates the data as required.
  */
 
-public class LocationPresenter implements LocationContract.Presenter
-{
+public class LocationPresenter implements LocationContract.Presenter {
     private final LocationContract.View mLocationService;
 
     private final JourneysRepository mJourneysRepository;
@@ -28,30 +28,24 @@ public class LocationPresenter implements LocationContract.Presenter
 
     private boolean isStopCalled = false;
 
-    public LocationPresenter(@NonNull JourneysRepository journeysRepository, @NonNull LocationContract.View locationServiceView)
-    {
+    public LocationPresenter(@NonNull JourneysRepository journeysRepository, @NonNull LocationContract.View locationServiceView) {
         mJourneysRepository = checkNotNull(journeysRepository, "journeysRepository cannot be null!");
         mLocationService = checkNotNull(locationServiceView, "journeysMapView cannot be null!");
     }
 
-    public AppExecutors setThreadExecutor()
-    {
+    public AppExecutors setThreadExecutor() {
         return mJourneysRepository.getJourneysLocalDataSource().getAppExecutors();
     }
 
     @Override
-    public void startNewJourney(String namePrefix)
-    {
-        if (mActiveJourney == null)
-        {
+    public void startNewJourney(String namePrefix) {
+        if (mActiveJourney == null) {
             Date startDate = new Date();
             final String tempName = namePrefix + " " + DateFormatter.getDateOnly(startDate);
             Journey newJourney = new Journey(tempName, startDate);
-            mJourneysRepository.saveJourney(newJourney, new JourneysDataSource.SaveJourneyCallback()
-            {
+            mJourneysRepository.saveJourney(newJourney, new JourneysDataSource.SaveJourneyCallback() {
                 @Override
-                public void onJourneySaved(Journey journey)
-                {
+                public void onJourneySaved(Journey journey) {
                     mActiveJourney = journey;
                     mLocationService.requestLocationUpdates();
                     mLocationService.sendNewDataBroadcast(LocationService.NEW_JOURNEY_BROADCAST);
@@ -65,15 +59,12 @@ public class LocationPresenter implements LocationContract.Presenter
      * the service.
      */
     @Override
-    public void finishNewJourney()
-    {
+    public void finishNewJourney() {
         isStopCalled = true;
         mActiveJourney.setEndDate(new Date());
-        mJourneysRepository.completeJourney(mActiveJourney, new JourneysDataSource.JourneyCompletedCallback()
-        {
+        mJourneysRepository.completeJourney(mActiveJourney, new JourneysDataSource.JourneyCompletedCallback() {
             @Override
-            public void onJourneyCompleted()
-            {
+            public void onJourneyCompleted() {
                 // TODO: weird bug. Broadcasts from here are not working...
                 mLocationService.sendNewDataBroadcast(LocationService.END_JOURNEY_BROADCAST);
                 mLocationService.stopLocationService();
@@ -90,16 +81,12 @@ public class LocationPresenter implements LocationContract.Presenter
      * @param timeMillis long, the timestamp of the latest location position in milliseconds
      */
     @Override
-    public void logLocation(double latitude, double longitude, long timeMillis)
-    {
-        if (!isStopCalled)
-        {
+    public void logLocation(double latitude, double longitude, long timeMillis) {
+        if (!isStopCalled) {
             Position newPosition = new Position(mActiveJourney.getJourneyId(), latitude, longitude, new Date(timeMillis));
-            mJourneysRepository.saveJourneyPosition(newPosition, new JourneysDataSource.SaveJourneyPositionCallback()
-            {
+            mJourneysRepository.saveJourneyPosition(newPosition, new JourneysDataSource.SaveJourneyPositionCallback() {
                 @Override
-                public void onPositionSaved()
-                {
+                public void onPositionSaved() {
                     // This call back returns no data but it is required for the service to
                     // broadcast that a new position was logged.
                     mLocationService.sendNewDataBroadcast(LocationService.NEW_POSITION_BROADCAST);

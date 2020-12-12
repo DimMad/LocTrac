@@ -1,6 +1,5 @@
 package com.thefloow.techtest.trackmyfloow.journeysmap;
 
-import android.support.annotation.NonNull;
 
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.thefloow.techtest.trackmyfloow.BasePresenter;
@@ -14,10 +13,8 @@ import java.util.List;
  * This is the contract between the View (JourneysMapFragment) and the presenter.
  */
 
-public interface JourneysMapContract
-{
-    interface View extends BaseView<Presenter>, OnMapReadyCallback
-    {
+public interface JourneysMapContract {
+    interface View extends BaseView<Presenter>, OnMapReadyCallback {
         boolean hasPermissions();
 
         void requestPermissions();
@@ -45,8 +42,7 @@ public interface JourneysMapContract
         void centerMapCamera(boolean isHistory, List<Position> positions);
     }
 
-    interface Presenter extends BasePresenter
-    {
+    interface Presenter extends BasePresenter {
         void getActiveJourney();
 
         void getActiveJourneyPositions();

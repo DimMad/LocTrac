@@ -1,6 +1,6 @@
 package com.thefloow.techtest.trackmyfloow.data.dbutils;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 import java.util.Date;
 
@@ -9,17 +9,14 @@ import java.util.Date;
  * that can be saved in a database. In this case we are converting dates.
  */
 
-public class DateConverter
-{
+public class DateConverter {
     @TypeConverter
-    public static Date toDate(Long timestamp)
-    {
+    public static Date toDate(Long timestamp) {
         return timestamp == null ? null : (new Date(timestamp));
     }
 
     @TypeConverter
-    public static Long toTimestamp(Date date)
-    {
+    public static Long toTimestamp(Date date) {
         return date == null ? null : date.getTime();
     }
 }
